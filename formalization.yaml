@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Erdős–Wilson: almost every graph is of class one"
+  description: >-
+    A Lean 4 / Mathlib proof of the theorem of Erdős and Wilson (1977) that almost every graph is
+    of class one: among the 2^C(n,2) labelled graphs on Fin n, the proportion whose line graph is
+    Δ(G)-colourable tends to 1 (erdos_wilson). On the way it proves that almost every graph has a
+    unique vertex of maximum degree (tendsto_unique_maxDegree) and that a graph with at most one
+    vertex of maximum degree is of class one (colorable_of_subsingleton_maxDegree, the special
+    case of Fournier's theorem imported from PALOMAR-2026-11-08-000009). The probabilistic part is
+    a second-moment argument with explicit binomial estimates: with X the number of vertices of
+    degree at least a threshold k, P(X = 0) ≤ 1/(n tl_k) + bp_{k-1}^2/(4 tl_k^2) and P(two distinct
+    vertices of equal degree ≥ k) ≤ n^2 Σ_{i ≥ k-1} bp_i^2, where bp, tl are the point
+    probabilities and upper tails of Bin(n-2, 1/2); the joint law of two degrees is computed
+    exactly by a symmetric-difference (translation) argument on the set of graphs, and k is chosen
+    adaptively. Only qualitative statements (limits) are stated; no rate of convergence is
+    claimed. Three statements; no definitions beyond Mathlib's.
+  authors:
+    - "Juan Pablo Traverso Gianini"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Juan Pablo Traverso Gianini"
+
+classification:
+  arxiv: ["math.CO"]
+  msc2020: ["05C15", "05C80"]
+
+repository:
+  role: "substantive-development"
+
+sources:
+  - title: "On the chromatic index of almost all graphs"
+    authors:
+      - "Paul Erdős"
+      - "Robin J. Wilson"
+    id: "doi:10.1016/0095-8956(77)90039-9"
+    type: "paper"
+    location: "Journal of Combinatorial Theory, Series B 23 (1977), no. 2-3, 255–257"
+    relationship: "formalizes"
+    note: >-
+      The theorem that almost all graphs are of class one, via the unique vertex of maximum
+      degree. The formalized probabilistic argument is a standard second-moment proof with an
+      adaptively chosen degree threshold, not necessarily the article's computation. The
+      formalization is by a different author; the article's authors were not involved.
+    license: "all rights reserved"
+    author_endorsement: "not-contacted"
+
+related_formalizations:
+  - id: "PALOMAR-2026-11-08-000009 (jtraverso/fournier-class-one @ b7baf7b)"
+    relationship: "builds-on"
+    note: "Pinned dependency: Fournier's theorem FournierLib.fournier, used for the deterministic step."
+  - id: "PALOMAR-2026-11-04-000009 v2 (jtraverso/overfull-critical-graphs @ b85da9a)"
+    relationship: "builds-on"
+    note: "Transitive dependency (through Fournier): Vizing's adjacency lemma."
+  - id: "PALOMAR-2026-10-15-000004 (jtraverso/vizing @ 33b2de8)"
+    relationship: "builds-on"
+    note: "Transitive dependency (through Fournier): Vizing's theorem."
+  - id: "jtraverso/random-graph-lib @ 86e5575"
+    relationship: "builds-on"
+    note: >-
+      Pinned dependency: RandomGraphLib.graphEquiv and RandomGraphLib.card_pairs, used only to
+      count the graphs on Fin n (2^C(n,2)).
+
+status:
+  scope: >-
+    The Erdős–Wilson theorem as a limit statement, the unique-maximum-degree statement it rests
+    on, and the deterministic step. Not formalized: rates of convergence; the model G(n, p) for
+    p ≠ 1/2.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude Opus 5.5"]
+      framework: "Claude Code (Anthropic)"
+      tool_setup: >-
+        Wrote the Lean development (ErdosWilson/*.lean), the Challenge/Solution pair and the
+        packaging under the author's direction, checked with lean against the pinned dependencies,
+        #print axioms and a comparison of the elaborated Challenge and Solution statements (pp.all)
+        (Lean v4.35.0-rc3, Mathlib c55e6e786f49471c72fbddbec5415808896aec1e).
+      cost:
+        wall_time: "a few hours"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "Natural-language instructions in Spanish, directed by the author."
+  spend_usd: "subscription-based"
+  notes: >-
+    The result was chosen by the human author; the Lean development is AI-written under the
+    author's direction and mechanically verified: no sorry, axioms limited to propext,
+    Classical.choice and Quot.sound, identical elaborated statements in the Challenge and the
+    Solution.
+
+fidelity:
+  divergences: >-
+    "Almost every graph" is the uniform measure on the 2^C(n,2) simple graphs on Fin n, written as
+    the ratio (#{G : SimpleGraph (Fin n) | P G} : ℝ) / 2 ^ n.choose 2. Class one is stated as
+    Δ(G)-colourability of the line graph (Mathlib's lineGraph, Colorable, maxDegree); decidability
+    is classical. Unique maximum degree is ∃! v, G.degree v = G.maxDegree.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "Claude Opus 5.5 (AI agent in Claude Code, acting for the author)"
+  notes: >-
+    Agent review by Claude Opus 5.5, distinct from the mechanical verification. Small cases were
+    checked by brute force (n ≤ 6: the proportion of class-one graphs is 1, 1, 1, 7/8, 15/16,
+    0.929, 0.975; every graph with a unique vertex of maximum degree is class one; the proportion
+    with a unique maximum is 0, 1, 0, 0.375, 0.4375, 0.513, 0.530), and the explicit tie bound was
+    evaluated numerically (about 0.67 at n = 10^4, 0.32 at 10^6, 0.22 at 10^7, decreasing to 0).
+    No independent human review has been performed. The result is classical; no mathematical
+    novelty is claimed.
+
+alignment:
+  namespace: "ErdosWilson"
+  statements:
+    - {source: "Fournier 1973, special case: a unique vertex of maximum degree ⇒ class one", lean: "ErdosWilson.colorable_of_subsingleton_maxDegree", module: "ErdosWilsonChallenge", status: "proved"}
+    - {source: "Almost every graph has a unique vertex of maximum degree", lean: "ErdosWilson.tendsto_unique_maxDegree", module: "ErdosWilsonChallenge", status: "proved"}
+    - {source: "Erdős–Wilson 1977: almost every graph is of class one", lean: "ErdosWilson.erdos_wilson", module: "ErdosWilsonChallenge", status: "proved"}
+
+acknowledgements: >-
+  Mathlib and the Lean community.

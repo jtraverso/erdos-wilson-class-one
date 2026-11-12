@@ -1,0 +1,34 @@
+name = "erdos_wilson"
+version = "0.1.0"
+defaultTargets = ["ErdosWilson", "ErdosWilsonChallenge", "ErdosWilsonSolution"]
+requiresModuleSystem = true
+
+[leanOptions]
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0-rc3"
+
+[[require]]
+name = "fournier"
+git = "https://github.com/jtraverso/fournier-class-one"
+rev = "b7baf7b17023d2a2a6dd9650c0706fcabb3bc227"
+
+[[require]]
+name = "random_graph_lib"
+git = "https://github.com/jtraverso/random-graph-lib"
+rev = "86e557526f9746ec1ccd60d50f05def40f2690f7"
+
+[[lean_lib]]
+name = "ErdosWilson"
+globs = ["ErdosWilson.+"]
+
+[[lean_lib]]
+name = "ErdosWilsonChallenge"
+roots = ["ErdosWilsonChallenge"]
+
+[[lean_lib]]
+name = "ErdosWilsonSolution"
+roots = ["ErdosWilsonSolution"]

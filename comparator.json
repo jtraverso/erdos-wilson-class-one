@@ -1,0 +1,16 @@
+{
+  "challenge_module": "ErdosWilsonChallenge",
+  "solution_module": "ErdosWilsonSolution",
+  "theorem_names": [
+    "ErdosWilson.colorable_of_subsingleton_maxDegree",
+    "ErdosWilson.tendsto_unique_maxDegree",
+    "ErdosWilson.erdos_wilson"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}
